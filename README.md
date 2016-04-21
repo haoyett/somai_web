@@ -1,6 +1,6 @@
 ### 脉脉爬虫小应用-web
 
-##### 作为python学习的一个业务项目。
+##### 作为python学习的一个业余项目。
 ##### 所用框架与技术：
 - python轻量级web框架 **[Flask](http://flask.pocoo.org/)**
 - 适用于iOS展现的前端框架 **[Framework7](http://framework7.taobao.org/)**
