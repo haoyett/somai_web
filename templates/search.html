@@ -1,0 +1,108 @@
+<!-- Top Navbar-->
+<div class="navbar theme-white">
+    <div class="navbar-inner">
+        <div class="left">
+            <a href="#" class="link icon-only open-panel">
+                <i class="icon icon-bars"></i>
+            </a>
+        </div>
+        <div class="center">Search MaiMai</div>
+    </div>
+</div>    
+
+<div class="pages navbar-through toolbar-through">
+
+  <div data-page="index" class="page">
+    <!-- Search bar -->
+    <form class="searchbar">
+        <div class="searchbar-filter">
+          <a href="#" data-filter="user" class="searchbar-filter-ac">姓名</a>
+        </div>
+
+        <div class="searchbar-input">
+            <input type="search" placeholder="Search">
+            <a href="#" class="searchbar-clear"></a>
+        </div>
+        <a href="#" class="searchbar-cancel">Cancel</a>
+    </form>
+  
+    <!-- Search bar overlay-->
+    <!-- <div class="searchbar-overlay"></div> -->
+    
+    <!-- Page content -->
+    <div class="page-content index-page">
+
+      {% if searchIndex.has_key('company') %}
+        <div class="content-block-title">company</div>
+        <div class="content-block">
+
+          <div class="list-group">
+            <ul>
+              {% for cid, cname in searchIndex['company'] %}
+                <a class="search-href" data-type="company" data-q="{{ cname }}" href="#">
+                <li>
+                  <div class="item-content">
+                    {{ cname }}
+                  </div>
+                </li>
+                </a>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      {% endif %}
+       
+
+      {% if searchIndex.has_key('school') %}
+        <div class="content-block-title">school</div>
+        <div class="content-block">
+
+          <div class="list-group">
+            <ul>
+              {% for school_short, school_name in searchIndex['school'] %}
+                <a class="search-href" data-type="school" data-q="{{ school_name }}"  href="#">
+                <li>
+                  <div class="item-content">
+                    {{ school_name }}
+                  </div>
+                </li>
+                </a>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      {% endif %}
+
+
+      {% if searchIndex.has_key('position') %}
+        <div class="content-block-title">position</div>
+        <div class="content-block">
+
+          <div class="list-group">
+            <ul>
+              {% for position_short, position_name in searchIndex['position'] %}
+                <a class="search-href" data-type="position" data-q="{{ position_name }}"  href="#">
+                <li>
+                  <div class="item-content">
+                    {{ position_name }}
+                  </div>
+                </li>
+                </a>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      {% endif %}
+
+    </div>
+
+    <div class="page-content search-page infinite-scroll-search">
+
+      <div class="content-block searchbar-not-found">
+              Nothing found
+      </div>
+
+    </div>
+
+  </div>
+</div>

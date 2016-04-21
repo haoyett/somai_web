@@ -1,0 +1,22 @@
+[db]
+host = localhost
+port = 3306
+user = user
+passwd = passwd
+
+[aliyun_db]
+host = localhost
+port = 3306
+user = user
+passwd = passwd
+
+[redis]
+host = 127.0.0.1
+port = 6379
+
+[DES]
+image_key = xxxxxxxx
+
+[sphinx]
+host = localhost
+port = 9312

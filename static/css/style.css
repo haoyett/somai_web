@@ -1,0 +1,85 @@
+body {
+    font-family: sans-serif;
+    background: #eee;
+}
+a, h1, h2 {
+    color: #377ba8;
+}
+h1, h2 {
+    font-family: 'Georgia', serif;
+    margin: 0;
+}
+h1 {
+    border-bottom: 2px solid #eee;
+}
+h2 {
+    font-size: 1.2em;
+}
+.page {
+    /*padding: 0.8em;*/
+    /*background: #eee;*/
+}
+
+
+
+.index-page .content-block-title{
+	color: #999;
+	font-size: 10px;
+}
+.index-page .list-group {
+  display: inline-block;
+}
+.index-page .list-group ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: relative;
+}
+.index-page .list-group .item-content { 
+  display: inline-block;
+}
+.index-page .list-group .item-inner .item-title-row {
+  margin: 0 auto;
+}
+.index-page .list-group li{
+	float: left;
+    border: 1px solid #ECEFF3;
+    padding: 5px 10px;
+    margin: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    /*background-color: #fff;*/
+    /*background: #eee;*/
+    color: #7A8B99;
+}
+
+
+
+.photos-page .list-group {
+  display: inline-block;
+}
+.photos-page .list-group .item-content { 
+  display: inline-block;
+}
+.photos-page .list-group .item-content img{ 
+  min-height: 80px;
+}
+.photos-page .list-group .item-inner {
+  margin: 0;
+  padding: 0;
+  min-height: 0;
+  padding-bottom: 7px;
+}
+.photos-page .list-group .item-inner:after {
+  height: 0;
+}
+.photos-page .list-group .item-inner .item-title-row {
+  margin: 0 auto;
+}
+.photos-page .list-group .item-inner .item-title-row .item-title {
+  font-size: 12px;
+  color: #666;
+}
+.photos-page .list-group li {
+  float: left;
+}

@@ -1,0 +1,70 @@
+<!-- We don't need full layout in this file because this page will be parsed with Ajax. It is just enough to put here .navbar and .page-->
+
+<!-- Top Navbar-->
+<div class="navbar theme-white">
+    <div class="navbar-inner">
+        <div class="left">
+            <a href="#" class="link icon-only open-panel">
+                <i class="icon icon-bars"></i>
+            </a>
+        </div>
+        <div class="center">Company</div>
+    </div>
+</div>    
+
+<!-- Pages container, because we use fixed-through navbar and toolbar, it has additional appropriate classes-->
+<div class="pages navbar-through toolbar-through">
+  <!-- Page, "data-page" contains page name -->
+  <div data-page="company" class="page">
+     <!-- Search bar -->
+    <form class="searchbar">
+        <div class="searchbar-input">
+            <input type="search" placeholder="Search">
+            <a href="#" class="searchbar-clear"></a>
+        </div>
+        <a href="#" class="searchbar-cancel">Cancel</a>
+    </form>
+  
+    <!-- Search bar overlay-->
+    <div class="searchbar-overlay"></div>
+    
+
+    <div class="page-content contacts-content contact-page infinite-scroll">
+
+        <div class="content-block searchbar-not-found">
+          <div class="content-block-inner">Nothing found</div>
+        </div>
+
+        <div class="list-block contacts-block contacts-list list-block-search searchbar-found">
+          <div class="list-group">
+            <ul>
+              <!-- <li class="list-group-title">A</li> -->
+              {% for row in company %}
+                  <li>
+                    <a href="users?cid={{ row['company_id'] }}">
+                    <div class="item-content">
+                      <!-- <div class="item-media"><img src="/image/default.png" width="44"></div> -->
+                      <div class="item-inner">
+                        <div class="item-title-row">
+                          <div class="item-title">{{ row['company_name'] }} </div>
+                          <div class="item-subtitle"> {{ row['trade'] }} </div>
+                        </div>
+                        <div class="item-after"><span class="badge">{{ row['num'] }}</span></div>
+                      </div>
+                    </div>
+                    </a>
+                  </li>
+                
+              {% endfor %}
+            </ul>
+          </div>
+          <!-- 加载提示符 -->
+          <div class="infinite-scroll-preloader">
+            <div class="preloader"></div>
+          </div>
+        </div>
+
+      
+    </div>
+  </div>
+</div>

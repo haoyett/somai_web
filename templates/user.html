@@ -1,0 +1,91 @@
+<!-- Top Navbar-->
+<div class="navbar theme-white">
+  <div class="navbar-inner">
+    <div class="left">
+      <a href="#" class="back link">
+        <i class="icon icon-back"></i>
+        <span>Back</span>
+      </a>
+    </div>
+    <div class="center sliding">个人资料</div>
+    <div class="right">
+      <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+    </div>
+  </div>
+</div>
+<div class="pages">
+
+  <div data-page="user" class="page">
+
+    <div class="page-content user-page">
+
+      <div class="contact-header">
+        <div class="item-photo">
+          <img src="{{ user['avatar'] }}" alt="" data-big="{{ user['avatar_big'] }}" />
+        </div>
+        <div class="header-text">
+          <h3>{{ user['name'] }}</h3>
+          <p>{{ user['company_name'] }} | {{ user['position'] }}</p>
+          <p>{{ user['loc'] }} | 影响力{{ user['rank'] }}</p>
+        </div>
+      </div>
+
+      <div class="content-block-title">工作经历</div>
+      <div class="list-block contact-block">
+        <div class="list-group list-group-user">
+          <ul>
+            {% for row in works %}
+              <li>
+                <div class="item-content">
+
+                  <div class="item-inner">
+                    <div class="item-title-row">
+                      <div class="item-media"><img src="{{ row['clogo'] }}" width="44"></div>
+                      <div class="item-title">
+                        {{ row['company_name'] }} 
+                        <span class="item-title-small">
+                          {{ row['position'] }}
+                        </span>
+                      </div>
+                      <div class="item-subtitle title-small">{{ row['start_date'] }} - {{ row['end_date'] }}</div>
+                      {% autoescape false %}
+                        <div class="item-subtitle">{{ row['description'] }}</div>
+                      {% endautoescape %}
+                    </div>
+                  </div>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+
+
+      <div class="content-block-title">教育经历</div>
+      <div class="list-block contact-block">
+        <div class="list-group list-group-user">
+          <ul>
+            {% for row in edus %}
+              <li>
+                <div class="item-content">
+                  <div class="item-inner">
+                    <div class="item-title-row">
+                      <div class="item-media"><img src="{{ row['school_url'] }}" width="44"></div>
+                      <div class="item-title">
+                        {{ row['school'] }} 
+                        <span class="item-title-small">
+                          {{ row['department'] }}  {{ row['degree_name'] }} 
+                        </span>
+                      </div>
+                      <div class="item-subtitle">{{ row['start_date'] }} - {{ row['end_date'] }}</div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

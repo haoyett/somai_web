@@ -1,0 +1,60 @@
+<!-- We don't need full layout in this file because this page will be parsed with Ajax. It is just enough to put here .navbar and .page-->
+
+<!-- Top Navbar-->
+<div class="navbar theme-white">
+  <div class="navbar-inner">
+    <div class="left">
+      <a href="#" class="back link">
+        <i class="icon icon-back"></i>
+        <span>Back</span>
+      </a>
+    </div>
+    <div class="center sliding">{{ cname }}</div>
+    <div class="right">
+      <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+    </div>
+  </div>
+</div>
+<div class="pages">
+
+
+  <div data-page="users" class="page">
+
+    <div class="page-content page-users infinite-scroll-users">
+
+      <div class="list-block contacts-block contacts-list list-block-search searchbar-found">
+        <div class="list-group list-group-users">
+          <ul>
+            {% for row in users %}
+              <li>
+                <a href="user?id={{ row['id'] }}">
+                <div class="item-content">
+                  <div class="item-media"><img src="{{ row['avatar'] }}" width="44"></div>
+                  <div class="item-inner">
+                    <div class="item-title-row">
+                      <div class="item-title">
+                        {{ row['name'] }} 
+                        <span class="item-title-small">
+                          {{ row['position'] }} 
+                        </span>
+                      </div>
+                      <div class="item-subtitle">{{ row['trade'] }} | {{ row['trade_category'] }}</div>
+                    </div>
+                    <div class="item-after"><span class="badge badge-power">P: {{ row['rank'] }}</span></div>
+                  </div>
+                </div>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <!-- 加载提示符 -->
+        <div class="infinite-scroll-preloader infinite-scroll-users-preloader">
+          <div class="preloader"></div>
+        </div>
+      </div>
+
+      
+    </div>
+  </div>
+</div>

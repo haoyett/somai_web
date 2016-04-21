@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Required meta tags-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="shortcut icon" href="/image/favicon.png" >
+
+    <!-- Your app title -->
+    <title>Find Man</title>
+    <!-- Path to Framework7 iOS CSS theme styles-->
+    <link rel="stylesheet" href="/framework7/css/framework7.ios.min.css">
+    <!-- Path to Framework7 iOS related color styles -->
+    <link rel="stylesheet" href="/framework7/css/framework7.ios.colors.min.css">
+    <!-- Path to your custom app styles-->
+    <link rel="stylesheet" href="/css/my-app.css">
+    <link rel="stylesheet" href="/css/style.css">
+  </head>
+  <body>
+    <!-- Status bar overlay for full screen mode (PhoneGap) -->
+    <div class="statusbar-overlay"></div>
+    <!-- Panels overlay-->
+    <div class="panel-overlay"></div>
+
+    <div class="panel panel-left panel-reveal">
+        <div class="list-block">
+          <div class="list-panel">
+            <ul>
+              <li class="item-content list-panel-all close-panel item-link">
+                <a href="/">
+                <div class="item-media"><img src="/image/icon-company.png" width="30"></div>
+                <div class="item-inner">
+                  <div class="item-title">Search</div>
+                </div>
+                </a>
+              </li>
+              <li class="item-content list-panel-favorites close-panel item-link">
+                <a href="photos">
+                  <div class="item-media"><img src="/image/icon-girl.png"  width="30"></div>
+                  <div class="item-inner">
+                    <div class="item-title">Photos</div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+    </div>
+
+
+    <!-- Views -->
+    <div class="views">
+      <!-- Your main view, should have "view-main" class -->
+      <div class="view view-main">
+
+          <!-- Top Navbar-->
+          <div class="navbar theme-white">
+              <div class="navbar-inner">
+                  <div class="left">
+                      <a href="#" class="link icon-only open-panel">
+                          <i class="icon icon-bars"></i>
+                      </a>
+                  </div>
+                  <div class="center">Search MaiMai</div>
+              </div>
+          </div>    
+
+          <div class="pages navbar-through toolbar-through">
+
+            <div data-page="index" class="page">
+              <!-- Search bar -->
+              <form class="searchbar">
+                  <div class="searchbar-filter">
+                    <a href="#" data-filter="user" class="searchbar-filter-ac">姓名</a>
+                  </div>
+
+                  <div class="searchbar-input">
+                      <input type="search" placeholder="Search">
+                      <a href="#" class="searchbar-clear"></a>
+                  </div>
+                  <a href="#" class="searchbar-cancel">Cancel</a>
+              </form>
+            
+              <!-- Search bar overlay-->
+              <!-- <div class="searchbar-overlay"></div> -->
+              
+              <!-- Page content -->
+              <div class="page-content index-page">
+
+                {% if searchIndex.has_key('company') %}
+                  <div class="content-block-title">company</div>
+                  <div class="content-block">
+
+                    <div class="list-group">
+                      <ul>
+                        {% for cid, cname in searchIndex['company'] %}
+                          <a class="search-href" data-type="company" data-q="{{ cname }}" href="#">
+                          <li>
+                            <div class="item-content">
+                              {{ cname }}
+                            </div>
+                          </li>
+                          </a>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  </div>
+                {% endif %}
+                 
+
+                {% if searchIndex.has_key('school') %}
+                  <div class="content-block-title">school</div>
+                  <div class="content-block">
+
+                    <div class="list-group">
+                      <ul>
+                        {% for school_short, school_name in searchIndex['school'] %}
+                          <a class="search-href" data-type="school" data-q="{{ school_name }}"  href="#">
+                          <li>
+                            <div class="item-content">
+                              {{ school_name }}
+                            </div>
+                          </li>
+                          </a>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  </div>
+                {% endif %}
+
+
+                {% if searchIndex.has_key('position') %}
+                  <div class="content-block-title">position</div>
+                  <div class="content-block">
+
+                    <div class="list-group">
+                      <ul>
+                        {% for position_short, position_name in searchIndex['position'] %}
+                          <a class="search-href" data-type="position" data-q="{{ position_name }}"  href="#">
+                          <li>
+                            <div class="item-content">
+                              {{ position_name }}
+                            </div>
+                          </li>
+                          </a>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  </div>
+                {% endif %}
+
+              </div>
+
+              <div class="page-content search-page infinite-scroll-search">
+
+                <div class="content-block searchbar-not-found">
+                        Nothing found
+                </div>
+        
+              </div>
+
+
+            </div>
+          </div>
+
+      </div>
+    </div>
+    <!-- Path to Framework7 Library JS-->
+    <script type="text/javascript" src="/framework7/js/framework7.min.js"></script>
+    <!-- Path to your app js-->
+    <script type="text/javascript" src="/js/my-app.js"></script>
+  </body>
+</html>           
