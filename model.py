@@ -10,17 +10,16 @@
 # 标准库
 
 # 第三方库
-import ConfigParser
-import redis
+from ConfigParser import ConfigParser
 import markdown
 import json
 
 # 应用程序自有库
-import mysql
 import pydes
-import sphinx
 import log
 from log import logging
+from tool import Tool
+from link import Link
 
 
 REDIS_PRE = 'maimai_v0_'	# redis前缀
@@ -44,71 +43,44 @@ class Model(object):
 	}
 
 	def __init__(self):
+		self.tool = Tool()
+		self.link = Link()
 
 		if not self.db:
-			self.db = self.connectDB()
+			self.db = self.link.connectMysql(db = 'maimai')
 
 		if not self.r:
-			self.r = self.connectRedis()
+			self.r = self.link.connectRedis()
 			
 		if not self.sp:
-			self.sp = self.connectSphinx()
-		pass
+			self.sp = self.link.connectSphinx()
 
-	""" 连接相关资源 start"""
+		cf = ConfigParser()
+		cf.read('conf/config.ini')
+		self.imageHost = cf.get('aliyun_oss', 'host')
 
-	def connectDB(self):
-		"""
-		连接mysql
+
+	def getImageUrlFromOSS(self, keyword, imgType = 'user'):
+		"""从OSS获取图片地址
+
+		Args:
+			keyword string 		关键词, 分别对应类型为(user[id], company[pycompany], school[pyschool])
+			imgType	string 		类型：user/company/school 
 
 		Returns:
-			mysql instance.
+			The image url saved OSS.
 		"""
-		cf = ConfigParser.ConfigParser()
-		cf.read('conf/config.ini')
+		if imgType == 'user':
+			intId = keyword
+			url = '/avatar/' + self.tool.md5(u'm_d_' + str(intId)) + '.jpeg'
+		elif imgType == 'company': 
+			pass
+		elif imgType == 'school':
+			pass
+		else:
+			return ''
 
-		dbconfig = {
-			'host': cf.get('aliyun_db', 'host'), 
-			'port': cf.getint('aliyun_db', 'port'), 
-			'user': cf.get('aliyun_db', 'user'), 
-			'passwd': cf.get('aliyun_db', 'passwd'), 
-			'db': 'maimai'
-		}
-		db = mysql.MySQL(dbconfig)
-		return db
-
-	def connectRedis(self):
-		"""
-		连接redis
-
-		Returns:
-			redis instance.
-		"""
-		cf = ConfigParser.ConfigParser()
-		cf.read('conf/config.ini')
-
-		r = redis.StrictRedis(
-				host = cf.get('redis', 'host'), 
-				port = cf.get('redis', 'port')
-			)
-		return r
-
-	def connectSphinx(self):
-		"""
-		连接Sphinx
-
-		Returns:
-			sphinx instance.
-		"""
-
-		cf = ConfigParser.ConfigParser()
-		cf.read('conf/config.ini')
-		sphinxconfig = {
-			'host': cf.get('sphinx', 'host'), 
-			'port': cf.get('sphinx', 'port')
-		}
-		sp = sphinx.Sphinx(sphinxconfig)
-		return sp
+		return self.imageHost + url
 
 
 	""" 用户信息 start"""
@@ -140,7 +112,8 @@ class Model(object):
 			'company_id': userInfo[3],
 			'company_name': userInfo[4],
 			'position': userInfo[5],
-			'avatar': userInfo[6],
+			# 'avatar': userInfo[6],
+			'avatar': self.getImageUrlFromOSS(userInfo[0], 'user'),
 			'gender': userInfo[7],
 			'rank': userInfo[8],
 			'loc': userInfo[9],
@@ -148,25 +121,16 @@ class Model(object):
 			'trade_category': userInfo[11],
 			'create_time': str(userInfo[12]),
 		}
-
-		# 添加大头像地址
-		user['avatar_big'] = user['avatar'].replace('a160', 'a480');
-
 		
 		uid = user['uid']
 
 		# 工作经历
-		sql = "select id, uid, name, company_id, company_name, position, description, start_date, end_date, update_time, create_time, serial_info from work where uid = '%s'" % (uid)
+		sql = "select id, uid, name, company_id, company_name, position, description, start_date, end_date, update_time, create_time from work where uid = '%s'" % (uid)
 		self.db.query(sql)
 		works = []
 		for row in self.db.fetchAllRows():
 			# 暂时取用serial_info的头像
 			clogo = 'http://i9.taou.com/maimai/c/interlogo/default.png'
-			try:
-				objJson = json.loads(row[11])
-				clogo = objJson['company_info']['clogo']
-			except Exception as e:
-				logging.warning('getUser json loads failed. msg: %s' % (e)) 
 
 			tmp = {
 				'id': row[0],
@@ -184,24 +148,14 @@ class Model(object):
 			}
 			works.append(tmp)
 
-		# works = [dict(id=row[0], uid=row[1], name=row[2], company_id=row[3], company_name=row[4], position=row[5], \
-		# 		description=markdown.markdown(row[6], extensions=['markdown.extensions.nl2br']), start_date=row[7].replace('-','.'), \
-		# 		end_date=row[8].replace('-','.').replace('None','至今'), update_time=str(row[9]), create_time=str(row[10])) \
-		#  		for row in self.db.fetchAllRows()]
-
 		# 教育经历 
-		sql = "select id, uid, name, school, department, degree, start_date, end_date, update_time, create_time, serial_info from education where uid = '%s'" % (uid)
+		sql = "select id, uid, name, school, department, degree, start_date, end_date, update_time, create_time from education where uid = '%s'" % (uid)
 		self.db.query(sql)
 		edus = []
 		for row in self.db.fetchAllRows():
 			# 暂时取用serial_info的公司头像
 			schoolUrl = 'http://i9.taou.com/maimai/c/interlogo/default.png'
-			try:
-				objJson = json.loads(row[10])
-				schoolUrl = objJson['school_url']
-			except Exception as e:
-				logging.warning('getUser json loads failed. msg: %s' % (e)) 
-
+			
 			tmp = {
 				'id': row[0],
 				'uid': row[1],
@@ -218,9 +172,6 @@ class Model(object):
 			}
 			edus.append(tmp)
 
-		# edus = [dict(id=row[0], uid=row[1], name=row[2], school=row[3], department=row[4], degree=row[5], degree_name=self.eduDegreeMap.get(str(row[5]), '其他'), \
-		# 		start_date=row[6].replace('-','.'), end_date=row[7].replace('-','.').replace('None','至今'), update_time=str(row[8]), create_time=str(row[9])) \
-		#  		for row in self.db.fetchAllRows()]
 		return {
 			'user': user,
 			'works': works,

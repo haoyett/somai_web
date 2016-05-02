@@ -19,6 +19,7 @@ from flask import Flask, request, session, g, redirect, url_for, abort, \
 from model import Model
 import log
 from log import logging
+from tool import Tool
 
 
 app = Flask(__name__)
@@ -158,7 +159,6 @@ def search():
 		strType = str(request.args.get('type', 'user'))			# 搜索类型
 		page = int(request.args.get('page', 0))					# 获取GET参数，没有参数就赋值 0
 		pageSize = int(request.args.get('page_size', 20))					# 获取GET参数，没有参数就赋值 0
-		# cid = request.args.get('cid', None)						# company类型中
 		q = request.args.get('q')								# 搜索关键词
 		q = str(q.encode('utf8'))
 
@@ -200,30 +200,16 @@ def response(data, template = None):
 	"""封装请求相应"""
 	display = str(request.args.get('_display', 'html'))		# 显示方式
 
+	tool = Tool()
 	if 'json' == display or template is None:
-		return responseSuccess(data)
+		return tool.responseSuccess(data)
 	else:
 		return render_template(template, **data)
 
-
-def responseSuccess(data):
-	# 返回数据格式
-	res = {
-		'code': 200, 
-		'msg': 'ok',
-		'data': data,
-	}
-	return json.dumps(res)
-
-
 def responseError(code = 400, msg = 'error', data = {}):
-	# 返回数据格式
-	res = {
-		'code': code, 
-		'msg': msg,
-		'data': data,
-	}
-	return json.dumps(res)
+	tool = Tool()
+	return tool.responseError(code, msg, data)
+
 
 
 if __name__ == '__main__':

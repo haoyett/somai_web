@@ -63,8 +63,7 @@ class MySQL(object):
 			self._cur.execute('SET NAMES utf8') 		# 设置默认编码
 			result = self._cur.execute(sql)
 		except Exception as e:
-			self.error_code = e.args[0]
-			print('数据库错误, %s: %s' % (e.args[0], e.args[1]))
+			print('数据库错误, %s' % (e))
 			result = False
 		return result
 
@@ -77,7 +76,7 @@ class MySQL(object):
 			self._conn.commit()
 		except Exception as e:
 			self.error_code = e.args[0]
-			print('数据库错误, %s: %s' % (e.args[0], e.args[1]))
+			print('数据库错误, %s' % (e))
 			result = False
 		return result
 
@@ -90,7 +89,7 @@ class MySQL(object):
 			self._conn.commit()
 		except Exception as e:
 			self.error_code = e.args[0]
-			print('数据库错误, %s: %s' % (e.args[0], e.args[1]))
+			print('数据库错误, %s' % (e))
 			result = False
 		return result
 
@@ -104,7 +103,7 @@ class MySQL(object):
 			result = self._conn.insert_id()
 		except Exception as e:
 			self.error_code = e.args[0]
-			print('数据库错误, %s: %s' % (e.args[0], e.args[1]))
+			print('数据库错误, %s' % (e))
 			result = False
 		return result
 
