@@ -307,7 +307,7 @@ class Model(object):
 		# 随机获取id  条件: gender、160头像、行业trade(IT互联网\通信电子\文化传媒\学生\金融\教育培训)
 		sql = 'SELECT t1.id, name, position, trade_category ' \
 			'FROM `user` AS t1 JOIN (SELECT ROUND(RAND() * ((SELECT MAX(id) FROM `user`) - (SELECT MIN(id) FROM `user`)) + (SELECT MIN(id) FROM `user`)) AS id) AS t2 ' \
-			'WHERE t1.id >= t2.id AND gender = "%s" AND avatar like "%%a160%%" AND trade IN ("IT互联网", "通信电子", "文化传媒", "学生", "金融", "教育培训")'\
+			'WHERE t1.id >= t2.id AND gender = "%s" AND avatar like "%%a160%%" AND trade IN ("IT互联网", "文化传媒", "学生")'\
 			'ORDER BY t1.id LIMIT %s' % (gender, pageSize)
 		
 		self.db.query(sql)
