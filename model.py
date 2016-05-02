@@ -205,7 +205,7 @@ class Model(object):
 					'company_id': row[3],
 					'company_name': row[4],
 					'position': row[5],
-					'avatar': row[6],
+					'avatar': self.getImageUrlFromOSS(row[0], 'user'),
 					'gender': row[7],
 					'rank': row[8],
 					'loc': row[9],
@@ -241,7 +241,8 @@ class Model(object):
 		if uids:
 			sql = "select id, uid, name, company_id, company_name, position, avatar, gender, rank, loc, trade, trade_category from user where uid in (%s)" % (','.join(uids))
 			self.db.query(sql)
-			users = [dict(id=row[0], uid=row[1], name=row[2], company_id=row[3], company_name=row[4], position=row[5], avatar=row[6], gender=row[7], rank=row[8], loc=row[9], trade=row[10], trade_category=row[11]) \
+			users = [dict(id=row[0], uid=row[1], name=row[2], company_id=row[3], company_name=row[4], position=row[5], \
+				avatar=self.getImageUrlFromOSS(row[0], 'user'), gender=row[7], rank=row[8], loc=row[9], trade=row[10], trade_category=row[11]) \
 			 		for row in self.db.fetchAllRows()]
 
 			# 获取最高学历的学校
@@ -276,7 +277,8 @@ class Model(object):
 		start = page * pageSize
 		sql = "select id, uid, name, company_id, company_name, position, avatar, gender, rank, loc, trade, trade_category from user where company_id = '%s' limit %s, %s" % (cid, start, pageSize)
 		self.db.query(sql)
-		users = [dict(id=row[0], uid=row[1], name=row[2], company_id=row[3], company_name=row[4], position=row[5], avatar=row[6], gender=row[7], rank=row[8], loc=row[9], trade=row[10], trade_category=row[11]) \
+		users = [dict(id=row[0], uid=row[1], name=row[2], company_id=row[3], company_name=row[4], position=row[5], \
+			avatar=self.getImageUrlFromOSS(row[0], 'user'), gender=row[7], rank=row[8], loc=row[9], trade=row[10], trade_category=row[11]) \
 		 		for row in self.db.fetchAllRows()]
 
 		# users = [dict(id=row[0], uid=row[1], name=row[2], company_id=row[3], company_name=row[4], position=row[5], avatar=getUserAvatarByLocal(row[0]), gender=row[7], rank=row[8], loc=row[9], trade=row[10], trade_category=row[11]) \
@@ -303,13 +305,13 @@ class Model(object):
 		start = page * pageSize 
 		# sql = "select id, avatar, trade_category from user where gender = '%s' and avatar like '%%a160%%' limit %s, %s" % (gender, start, pageSize)
 		# 随机获取id  条件: gender、160头像、行业trade(IT互联网\通信电子\文化传媒\学生\金融\教育培训)
-		sql = 'SELECT t1.id, avatar, trade_category ' \
+		sql = 'SELECT t1.id, name, position, trade_category ' \
 			'FROM `user` AS t1 JOIN (SELECT ROUND(RAND() * ((SELECT MAX(id) FROM `user`) - (SELECT MIN(id) FROM `user`)) + (SELECT MIN(id) FROM `user`)) AS id) AS t2 ' \
 			'WHERE t1.id >= t2.id AND gender = "%s" AND avatar like "%%a160%%" AND trade IN ("IT互联网", "通信电子", "文化传媒", "学生", "金融", "教育培训")'\
 			'ORDER BY t1.id LIMIT %s' % (gender, pageSize)
 		
 		self.db.query(sql)
-		photos = [dict(id=row[0], avatar=row[1], trade_category=row[2]) \
+		photos = [dict(id=row[0], avatar=self.getImageUrlFromOSS(row[0], 'user'), name=row[1], position=row[2], trade_category=row[3]) \
 		 		for row in self.db.fetchAllRows()]
 		return photos
 
@@ -324,7 +326,7 @@ class Model(object):
 			image file name.
 		"""
 	    # 读取配置文件, 获得加密key
-		cf = ConfigParser.ConfigParser()
+		cf = ConfigParser()
 		cf.read('conf/config.ini')
 		key = cf.get('DES', 'image_key')
 
@@ -382,7 +384,7 @@ class Model(object):
 		依赖:
 			local_init.int 
 		"""
-		cf = ConfigParser.ConfigParser()
+		cf = ConfigParser()
 		cf.read('conf/local_init.ini')
 
 		# logging.info('test main logger') 

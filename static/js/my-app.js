@@ -45,9 +45,6 @@ var mySearchbar = myApp.searchbar('.searchbar', {
        clearSearchbar();
     },
     onSearch: function(s){
-        console.log('onSearch' + s.query);
-
-
         search_query = s.query;
         var filterType = $$('.searchbar-filter-ac').attr('data-filter');
 
@@ -87,11 +84,8 @@ $$('.searchbar-filter-ac').on('click', function () {
     searchFilterClick(this);
 });
 
-indexPageInit();
-
 function indexPageInit()
 {
-    console.log('indexPageInit');
 }
 
 
@@ -155,10 +149,9 @@ myApp.onPageInit('user', function (page) {
     var img = $$(".item-photo img");
     img.on('click', function (event) {
         smallSrc = img.attr('src');
-        bigSrc = img.attr('data-big');
 
         var myPhotoBrowser = myApp.photoBrowser({
-            photos: [bigSrc],
+            photos: [smallSrc],
             expositionHideCaptions: true,
             theme: 'dark',
             navbar: false,
@@ -211,10 +204,10 @@ myApp.onPageInit('photos', function (page) {
                      html += '<li>' + 
                                 '<a href="user?id=' + data[i]['id'] + '">' +
                                 '<div class="item-content">' + 
-                                    '<div class="item-media"><img src="' + data[i]['avatar'] + '" width="100"></div>' + 
+                                    '<div class="item-media"><img src="' + data[i]['avatar'] + '" width="160"></div>' + 
                                     '<div class="item-inner">' +
                                         '<div class="item-title-row">' +
-                                            '<div class="item-title">' + data[i]['trade_category'] + '</div>' +  
+                                            '<div class="item-title">' + data[i]['name'] + ' | ' + data[i]['position'] + '</div>' +  
                                         '</div>' + 
                                     '</div>' + 
                                 '</div>' + 

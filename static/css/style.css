@@ -75,10 +75,14 @@ h2 {
 }
 .photos-page .list-group .item-inner .item-title-row {
   margin: 0 auto;
+  max-width: 160px;
 }
 .photos-page .list-group .item-inner .item-title-row .item-title {
   font-size: 12px;
   color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .photos-page .list-group li {
   float: left;
